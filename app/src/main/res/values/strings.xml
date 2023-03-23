@@ -17,4 +17,19 @@
     <string name="current_mode">current mode</string>
     <string name="_c">C</string>
     <string name="mostly_clear">mostly clear</string>
+    <string name="save">save</string>
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
+    <string name="add_custom_location">Add custom location</string>
+    <string name="gps">GPS</string>
+    <string name="her_you_can_chose_your_location_setting">Choose your location setting</string>
+    <string name="her_you_can_chose_language">Choose language</string>
+    <string name="imperial">Imperial</string>
+    <string name="standard">Standard</string>
+    <string name="Metric" />
+    <string name="choose_units_of_measurement">Choose units of measurement</string>
+    <string name="metric">Metric</string>
+    <string name="celsius_and_wind_speed_in_meter_sec">Temperature unit : <b>Celsius</b> \nWind speed : <b>meter/sec</b> </string>
+    <string name="kelvin_and_wind_speed_in_meter_sec">Temperature unit : <b>kelvin</b> \nWind speed : <b>meter/sec</b> </string>
+    <string name="fahrenheit_and_wind_speed_in_miles_hour">Temperature unit : <b>fahrenheit</b> \nWind speed : <b>miles/hour</b> </string>
 </resources>

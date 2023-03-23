@@ -6,11 +6,12 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="5dp"
     android:layout_marginVertical="5dp"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="24dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#287EC8E3">
 
         <ImageView
             android:id="@+id/event_ic"
@@ -28,11 +29,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:contentDescription="@string/description"
             android:src="@drawable/ic_description_24"
             android:text="@string/description"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/start_text"
-            android:contentDescription="@string/description" />
+            app:layout_constraintTop_toBottomOf="@id/start_text" />
 
         <TextView
             android:id="@+id/event_text"
@@ -106,12 +107,12 @@
             android:id="@+id/close_alert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/alert"
             android:src="@drawable/ic_baseline_close_24"
             app:layout_constraintBottom_toBottomOf="@id/event_Data"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/event_Data"
-            app:layout_constraintTop_toTopOf="@id/event_Data"
-            android:contentDescription="@string/alert" />
+            app:layout_constraintTop_toTopOf="@id/event_Data" />
 
 
         <TextView
@@ -124,18 +125,18 @@
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/repetedDaialyPic"
-            app:layout_constraintTop_toBottomOf="@id/description_ic"/>
+            app:layout_constraintTop_toBottomOf="@id/description_ic" />
 
         <ImageView
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/description_ic"
             android:id="@+id/repetedDaialyPic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:layout_marginHorizontal="10dp"
+            android:contentDescription="@string/reputation_daily"
             android:src="@drawable/ic_check_24"
-            android:contentDescription="@string/reputation_daily" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/description_ic" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
