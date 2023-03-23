@@ -6,4 +6,15 @@
     <string name="favourite">favourite</string>
     <string name="alert">alert</string>
     <string name="setting">setting</string>
+    <string name="shape">shape</string>
+    <string name="no_data_available">No data  available</string>
+    <string name="add_fav">add_fav</string>
+    <string name="enable_alarm">enable alarm</string>
+    <string name="event">event</string>
+    <string name="description">description</string>
+    <string name="reputation_daily">daily repute..?</string>
+    <string name="start">start</string>
+    <string name="current_mode">current mode</string>
+    <string name="_c">C</string>
+    <string name="mostly_clear">mostly clear</string>
 </resources>
