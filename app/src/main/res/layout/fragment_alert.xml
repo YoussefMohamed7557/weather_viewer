@@ -22,7 +22,7 @@
 
         <ToggleButton
             android:id="@+id/enableOrNot"
-            android:layout_width="166dp"
+            android:layout_width="178dp"
             android:layout_height="87dp"
             android:layout_gravity="end"
             android:background="@drawable/toggle_selector"
