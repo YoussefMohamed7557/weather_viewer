@@ -47,4 +47,8 @@ class MainActivity : AppCompatActivity() {
             return@setOnNavigationItemSelectedListener true
         }
     }
+
+    companion object {
+        var units: String = "standard"
+    }
 }

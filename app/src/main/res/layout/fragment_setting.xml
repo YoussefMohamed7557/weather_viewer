@@ -11,7 +11,8 @@ xmlns:tools="http://schemas.android.com/tools">
 <!--   imperial  For temperature in Fahrenheit and wind speed in miles/hour, use-->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/cardview_light_background">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -35,6 +36,7 @@ xmlns:tools="http://schemas.android.com/tools">
                 android:id="@+id/unitsImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:foregroundTint = "@color/purple_500"
                 android:contentDescription="@string/setting"
                 android:paddingHorizontal="10dp"
                 android:src="@drawable/ic_units_24"
@@ -73,9 +75,12 @@ xmlns:tools="http://schemas.android.com/tools">
                     android:layout_height="55dp"
                     android:layout_gravity="start"
                     android:layout_marginBottom="20dp"
+                    android:buttonTint="@color/purple_700"
                     android:checked="false"
                     android:text="@string/metric"
                     android:textColor="@color/black"
+                    android:textColorHighlight="@color/purple_700"
+                    android:textColorLink="@color/purple_700"
                     android:textSize="20sp" />
 
                 <RadioButton
@@ -84,9 +89,12 @@ xmlns:tools="http://schemas.android.com/tools">
                     android:layout_height="55dp"
                     android:layout_gravity="start"
                     android:layout_marginBottom="20dp"
+                    android:buttonTint="@color/purple_700"
                     android:checked="false"
                     android:text="@string/standard"
                     android:textColor="@color/black"
+                    android:textColorHighlight="@color/purple_700"
+                    android:textColorLink="@color/purple_700"
                     android:textSize="20sp" />
 
                 <RadioButton
@@ -96,6 +104,7 @@ xmlns:tools="http://schemas.android.com/tools">
                     android:layout_gravity="start"
                     android:layout_marginBottom="20dp"
                     android:checked="false"
+                    android:buttonTint="@color/purple_700"
                     android:text="@string/imperial"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
@@ -119,7 +128,7 @@ xmlns:tools="http://schemas.android.com/tools">
                     android:paddingHorizontal="20dp"
                     android:text="@string/celsius_and_wind_speed_in_meter_sec"
                     android:textColor="@color/purple_500"
-                    android:textSize="20dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -129,7 +138,7 @@ xmlns:tools="http://schemas.android.com/tools">
                     android:paddingHorizontal="20dp"
                     android:text="@string/kelvin_and_wind_speed_in_meter_sec"
                     android:textColor="@color/purple_500"
-                    android:textSize="20dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -139,7 +148,7 @@ xmlns:tools="http://schemas.android.com/tools">
                     android:paddingHorizontal="20dp"
                     android:text="@string/fahrenheit_and_wind_speed_in_miles_hour"
                     android:textColor="@color/purple_500"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -198,6 +207,7 @@ xmlns:tools="http://schemas.android.com/tools">
                     android:layout_height="55dp"
                     android:layout_gravity="start"
                     android:layout_marginBottom="20dp"
+                    android:buttonTint="@color/purple_700"
                     android:layout_weight="1"
                     android:checked="false"
                     android:text="@string/english"
@@ -210,6 +220,7 @@ xmlns:tools="http://schemas.android.com/tools">
                     android:layout_height="55dp"
                     android:layout_gravity="start"
                     android:layout_marginBottom="20dp"
+                    android:buttonTint="@color/purple_700"
                     android:layout_weight="1"
                     android:checked="false"
                     android:text="@string/arabic"
@@ -260,6 +271,7 @@ xmlns:tools="http://schemas.android.com/tools">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
+                android:buttonTint="@color/purple_700"
                 android:paddingHorizontal="10dp"
                 android:weightSum="2"
                 app:layout_constraintStart_toStartOf="parent"
@@ -271,6 +283,7 @@ xmlns:tools="http://schemas.android.com/tools">
                     android:layout_height="55dp"
                     android:layout_gravity="start"
                     android:layout_marginBottom="20dp"
+                    android:buttonTint="@color/purple_700"
                     android:layout_weight="1"
                     android:checked="false"
                     android:text="@string/gps"
@@ -283,6 +296,7 @@ xmlns:tools="http://schemas.android.com/tools">
                     android:layout_height="55dp"
                     android:layout_gravity="start"
                     android:layout_marginBottom="20dp"
+                    android:buttonTint="@color/purple_700"
                     android:layout_weight="1"
                     android:checked="false"
                     android:text="@string/add_custom_location"
