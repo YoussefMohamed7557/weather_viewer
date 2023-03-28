@@ -1,4 +1,4 @@
-package com.example.weather_viewer.home_fragment
+package com.example.weather_viewer.fragments.home_fragment
 
 import android.os.Build
 import android.view.LayoutInflater

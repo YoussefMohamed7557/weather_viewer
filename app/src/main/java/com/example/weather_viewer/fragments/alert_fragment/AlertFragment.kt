@@ -1,4 +1,4 @@
-package com.example.weather_viewer.alert_fragment
+package com.example.weather_viewer.fragments.alert_fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

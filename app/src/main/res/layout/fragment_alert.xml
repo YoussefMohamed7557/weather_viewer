@@ -10,7 +10,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".alert_fragment.AlertFragment"
+        tools:context=".fragments.alert_fragment.AlertFragment"
         android:background="@color/cardview_light_background">
 
         <TextView

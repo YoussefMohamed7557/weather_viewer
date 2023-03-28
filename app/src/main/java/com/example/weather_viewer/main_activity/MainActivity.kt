@@ -6,11 +6,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.weather_viewer.R
-import com.example.weather_viewer.alert_fragment.AlertFragment
+import com.example.weather_viewer.fragments.alert_fragment.AlertFragment
 import com.example.weather_viewer.databinding.ActivityMainBinding
-import com.example.weather_viewer.favourite_fragment.FavouriteFragment
-import com.example.weather_viewer.home_fragment.HomeFragment
-import com.example.weather_viewer.setting_fragment.SettingFragment
+import com.example.weather_viewer.fragments.favourite_fragment.FavouriteFragment
+import com.example.weather_viewer.fragments.home_fragment.HomeFragment
+import com.example.weather_viewer.fragments.setting_fragment.SettingFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
