@@ -1,4 +1,4 @@
-package com.example.weather_viewer.home_fragment
+package com.example.weather_viewer.data_classes
 
 data class Temp(
     val day: Double,

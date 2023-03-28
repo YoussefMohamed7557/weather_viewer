@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_viewer.R
+import com.example.weather_viewer.data_classes.Daily
 import com.example.weather_viewer.main_activity.MainActivity
 
 class DailyAdapter ( var homeViewModel: HomeViewModel) : RecyclerView.Adapter<DailyAdapter.MyViewHolder>() {

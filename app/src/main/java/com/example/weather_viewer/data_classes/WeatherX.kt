@@ -1,6 +1,6 @@
-package com.example.weather_viewer.home_fragment
+package com.example.weather_viewer.data_classes
 
-data class WeatherXX(
+data class WeatherX(
     val description: String,
     val icon: String,
     val id: Int,
