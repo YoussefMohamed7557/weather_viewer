@@ -1,4 +1,4 @@
-package com.example.weather_viewer.data_source.local
+package com.example.weather_viewer.data_source.local.room
 import androidx.room.TypeConverter
 import com.example.weather_viewer.data_classes.*
 import com.google.gson.Gson

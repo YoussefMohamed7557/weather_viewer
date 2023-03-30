@@ -1,9 +1,9 @@
-package com.example.weather_viewer.data_source.local
+package com.example.weather_viewer.data_source.local.room
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.example.weather_viewer.data_source.local.entities.AllData
+import com.example.weather_viewer.data_source.local.room.entities.AllData
 
 class RoomRepositry(context: Application) : AndroidViewModel(context) {
     val database : DataBaseWeather?= DataBaseWeather.getInstance(context)

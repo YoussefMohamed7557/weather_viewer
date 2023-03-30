@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
+        var readFromDatabase: Boolean = false
         var units: String = "standard"
     }
 }

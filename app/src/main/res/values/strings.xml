@@ -44,4 +44,9 @@
     <string name="content">Content</string>
     <string name="this_week">This week</string>
     <string name="_3_15">3 : 15</string>
+    <string name="location_not_enabel">Location Not Enabled ..!</string>
+    <string name="to_load_condetions">To load the current weather data you have to enable location</string>
+    <string name="enabel">Enable</string>
+    <string name="load_from_last_known_data">Load From Last Known data</string>
+    <string name="you_areoffline">You are offline ..!</string>
 </resources>

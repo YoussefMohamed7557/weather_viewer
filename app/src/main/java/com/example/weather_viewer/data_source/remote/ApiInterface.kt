@@ -1,7 +1,7 @@
 package com.example.weather_viewer.data_source.remote
 
-import com.example.weather_viewer.data_source.local.entities.AllData
-import com.example.weather_viewer.data_source.local.entities.FavData
+import com.example.weather_viewer.data_source.local.room.entities.AllData
+import com.example.weather_viewer.data_source.local.room.entities.FavData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

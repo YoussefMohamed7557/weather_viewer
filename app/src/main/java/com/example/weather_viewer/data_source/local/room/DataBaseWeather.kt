@@ -1,13 +1,13 @@
-package com.example.weather_viewer.data_source.local
+package com.example.weather_viewer.data_source.local.room
 
 import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.weather_viewer.data_source.local.entities.AlertTable
-import com.example.weather_viewer.data_source.local.entities.AllData
-import com.example.weather_viewer.data_source.local.entities.FavData
+import com.example.weather_viewer.data_source.local.room.entities.AlertTable
+import com.example.weather_viewer.data_source.local.room.entities.AllData
+import com.example.weather_viewer.data_source.local.room.entities.FavData
 
 
 @TypeConverters(Converter::class)

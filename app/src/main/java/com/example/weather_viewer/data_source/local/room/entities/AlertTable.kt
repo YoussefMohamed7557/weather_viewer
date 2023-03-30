@@ -1,4 +1,4 @@
-package com.example.weather_viewer.data_source.local.entities
+package com.example.weather_viewer.data_source.local.room.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

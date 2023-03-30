@@ -1,60 +1,250 @@
 package com.example.weather_viewer.fragments.home_fragment
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_viewer.R
+import com.example.weather_viewer.data_classes.Daily
+import com.example.weather_viewer.data_classes.Hourly
+import com.example.weather_viewer.data_source.local.room.entities.AllData
+import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
+import com.example.weather_viewer.databinding.FragmentHomeBinding
+import com.example.weather_viewer.main_activity.MainActivity
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var adapter: HourlyAdabter
+    private lateinit var dailyadapter: DailyAdapter
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        homeViewModel = ViewModelProvider(this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)) [HomeViewModel::class.java]
+        relad()
+        adapter = HourlyAdabter(homeViewModel)
+        dailyadapter = DailyAdapter(homeViewModel)
+        setCurrentBtnClickListener()
+        setTodayBtnClickListener()
+        setThisWeekBtnClickListener()
+        
+        binding.reload.setOnClickListener {
+            Log.d("TAG", "clicked")
+            relad()
+        }
+        
+        homeViewModel.getRoomData().observe(viewLifecycleOwner) {
+            if (it.size == 1) {
+                initUI(it[0])
+                loadHourly(it[0].hourly)
+                loadDaily(it[0].daily)
+                homeViewModel.loadImage(binding.currentModeImg, it[0].current.weather[0].icon)
+            }
+        }
+         
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun relad() {
+        Log.d("TAG", "reload")
+
+        lateinit var settingModel: SettingModel
+        homeViewModel.getSetting().observe(viewLifecycleOwner) { it ->
+            Log.d("TAG", "it.        lang" + it.lang)
+            settingModel = it
+            MainActivity.units = settingModel.units
+            binding.currentTempUnic.text = homeViewModel.getUnites(settingModel.units)
+
+
+            if (settingModel.location == "gps") {
+                homeViewModel.gettingLocation(this.requireContext(), requireActivity()).observe(viewLifecycleOwner) {
+                    val location = it
+                    Log.d("TAG", "it.location" + location.latitude)
+                    homeViewModel.loadOnlineData(
+                        location.latitude.toString(),
+                        location.longitude.toString(),
+                        settingModel.lang,
+                        settingModel.units,
+                        requireActivity()
+                    )
                 }
+
+            } else {
+                homeViewModel.getLocationSettnig().observe(viewLifecycleOwner) {
+                    Log.d("TAG", "it.latitude" + it.latitude)
+                    Log.d("TAG", "it.latitude" + it.longitude)
+
+                    homeViewModel.loadOnlineData(
+                        it.latitude.toString(),
+                        it.longitude.toString(),
+                        settingModel.lang,
+                        settingModel.units,
+                        requireActivity()
+                    )
+                }
+
             }
+        }
     }
+
+    private fun loadDaily(dailyList: List<Daily>) {
+        val lay: RecyclerView.LayoutManager = LinearLayoutManager(activity)
+        binding.dialyList.layoutManager = lay
+        dailyadapter.models = dailyList
+        binding.dialyList.adapter = dailyadapter
+    }
+
+    private fun loadHourly(hourlyList: List<Hourly>) {
+        val lay: RecyclerView.LayoutManager = LinearLayoutManager(activity)
+        binding.hourlyList.layoutManager = lay
+        adapter.models = hourlyList
+        binding.hourlyList.adapter = adapter
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initUI(it: AllData) {
+        Log.d("TAG", "icon ${it.current.weather[0].icon}")
+        binding.currentCity.text = it.timezone
+        binding.description.text = it.current.weather[0].description
+        binding.currentTemp.text = it.current.temp.toString()
+        binding.humidityPercentage.text = it.current.humidity.toString()
+        binding.windSpeedPercentage.text = it.current.wind_speed.toString()
+        binding.pressurePercentage.text = it.current.pressure.toString()
+        binding.cloudsPercentage.text = it.current.clouds.toString()
+        binding.currentTime.text = homeViewModel.formateTime(it.current.dt)
+        binding.currentDate.text = homeViewModel.formateDate(it.current.dt)
+        binding.sunrisetime.text = homeViewModel.formateTime(it.current.sunrise)
+        binding.sunsetdate.text = homeViewModel.formateTime(it.current.sunset)
+    }
+
+    fun setCurrentBtnClickListener(){
+        binding.cureentCard.setOnClickListener {
+            binding.cureentCard.backgroundTintList = ContextCompat.getColorStateList(
+                requireActivity(),
+                R.color.purple_500
+            )
+            binding.daialyCard.backgroundTintList = ContextCompat.getColorStateList(
+                requireActivity(),
+                R.color.white
+            )
+            binding.hoourlyCard.backgroundTintList = ContextCompat.getColorStateList(
+                requireActivity(),
+                R.color.white
+            )
+            binding.currentList.visibility = View.VISIBLE
+            binding.hourlyList.visibility = View.GONE
+            binding.dialyList.visibility = View.GONE
+            binding.currentext.setTextColor(
+                ContextCompat.getColorStateList(
+                    requireActivity(),
+                    R.color.white
+                )
+            )
+            binding.dailyText.setTextColor(
+                ContextCompat.getColorStateList(
+                    requireActivity(),
+                    R.color.purple_700
+                )
+            )
+            binding.hourlyText.setTextColor(
+                ContextCompat.getColorStateList(
+                    requireActivity(),
+                    R.color.purple_700
+                )
+            )
+        }
+    }
+    fun setTodayBtnClickListener(){
+        binding.hoourlyCard.setOnClickListener {
+            binding.hoourlyCard.backgroundTintList = ContextCompat.getColorStateList(
+                requireActivity(),
+                R.color.purple_500
+            )
+            binding.cureentCard.backgroundTintList = ContextCompat.getColorStateList(
+                requireActivity(),
+                R.color.white
+            )
+            binding.daialyCard.backgroundTintList = ContextCompat.getColorStateList(
+                requireActivity(),
+                R.color.white
+            )
+            binding.hourlyList.visibility = View.VISIBLE
+            binding.dialyList.visibility = View.GONE
+            binding.currentList.visibility = View.GONE
+            binding.hourlyText.setTextColor(
+                ContextCompat.getColorStateList(
+                    requireActivity(),
+                    R.color.white
+                )
+            )
+            binding.currentext.setTextColor(
+                ContextCompat.getColorStateList(
+                    requireActivity(),
+                    R.color.purple_700
+                )
+            )
+            binding.dailyText.setTextColor(
+                ContextCompat.getColorStateList(
+                    requireActivity(),
+                    R.color.purple_700
+                )
+            )
+        }
+
+    }
+    fun setThisWeekBtnClickListener(){
+        binding.daialyCard.setOnClickListener {
+            binding.daialyCard.backgroundTintList = ContextCompat.getColorStateList(
+                requireActivity(),
+                R.color.purple_500
+            )
+            binding.hoourlyCard.backgroundTintList = ContextCompat.getColorStateList(
+                requireActivity(),
+                R.color.white
+            )
+            binding.cureentCard.backgroundTintList = ContextCompat.getColorStateList(
+                requireActivity(),
+                R.color.white
+            )
+            binding.dialyList.visibility = View.VISIBLE
+            binding.hourlyList.visibility = View.GONE
+            binding.currentList.visibility = View.GONE
+            binding.dailyText.setTextColor(
+                ContextCompat.getColorStateList(
+                    requireActivity(),
+                    R.color.white
+                )
+            )
+            binding.hourlyText.setTextColor(
+                ContextCompat.getColorStateList(
+                    requireActivity(),
+                    R.color.purple_700
+                )
+            )
+            binding.currentext.setTextColor(
+                ContextCompat.getColorStateList(
+                    requireActivity(),
+                    R.color.purple_700
+                )
+            )
+        }
+    }
+
+
 }
+
+
+
