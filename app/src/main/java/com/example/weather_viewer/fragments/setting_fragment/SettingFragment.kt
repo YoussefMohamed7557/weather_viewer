@@ -1,60 +1,109 @@
 package com.example.weather_viewer.fragments.setting_fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Contacts.Settings.getSetting
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.example.weather_viewer.R
+import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
+import com.example.weather_viewer.databinding.FragmentSettingBinding
+import com.example.weather_viewer.main_activity.MainActivity
+import com.example.weather_viewer.map_activity.MapActivity
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SettingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SettingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    lateinit var binding: FragmentSettingBinding
+    lateinit var settingViewModel: SettingViewModel
+    var langS:String="en"
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSettingBinding.inflate(inflater, container, false)
+        settingViewModel =  ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(
+            requireActivity().application
+        ))[SettingViewModel::class.java]
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
+        binding.saveButton.setOnClickListener{
+            savedata()
+        }
+
+        binding.addLocationRadioButton.setOnClickListener{
+            val intent = Intent(activity, MapActivity::class.java)
+            intent.putExtra("type","setting")
+            startActivity(intent)
+        }
+        getSetting()
+
+        return binding.root
+    }
+    fun getSetting() {
+        settingViewModel.getSetting().observe(viewLifecycleOwner) {
+            val units: String = it.units
+            val lang: String = it.lang
+            val location: String = it.location
+            Log.d("TAG", it.location)
+            if (units == "standard") {
+                binding.unitsRadioGroup.check(R.id.standardRadioButton)
+            } else if (units == "imperial") {
+                binding.unitsRadioGroup.check(R.id.imperialRadioButton)
+            } else {
+                binding.unitsRadioGroup.check(R.id.metricRadioButton)
+            }
+
+            if (lang == "en") {
+                binding.langRadioGroup.check(R.id.EnglishRadioButton)
+            } else {
+                binding.langRadioGroup.check(R.id.ArabicRadioButton)
+            }
+
+            if (location == "add") {
+                binding.locationRadioGroup.check(R.id.addLocationRadioButton)
+            } else {
+                binding.locationRadioGroup.check(R.id.gpsRadioButton)
+            }
         }
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_setting, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SettingFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SettingFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun savedata() {
+        val units: String = when (binding.unitsRadioGroup.checkedRadioButtonId) {
+            R.id.standardRadioButton -> {
+                "standard"
             }
+            R.id.imperialRadioButton -> {
+                "imperial"
+            }
+            else -> {
+                "metric"
+            }
+        }
+
+
+        val lang: String = if (binding.langRadioGroup.checkedRadioButtonId == R.id.EnglishRadioButton) {
+            "en"
+        } else {
+            "ar"
+        }
+        langS=lang
+
+
+
+        val location: String = if (binding.locationRadioGroup.checkedRadioButtonId == R.id.gpsRadioButton) {
+            "gps"
+        } else {
+            "add"
+        }
+
+        settingViewModel.setSetting(SettingModel(units, lang, location))
+        settingViewModel.setLocale(requireActivity(),langS)
+        startActivity(Intent(requireContext(), MainActivity::class.java))
+        requireActivity().finish()
     }
+
 }

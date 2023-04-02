@@ -70,4 +70,8 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
 
 
     }
+
+    fun setSetting(setttingModel:SettingModel) {
+        sharedPreferencesReopsitory.updateSetting(setttingModel)
+    }
 }
