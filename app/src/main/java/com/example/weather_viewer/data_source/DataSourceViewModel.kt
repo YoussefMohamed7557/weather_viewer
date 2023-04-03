@@ -74,4 +74,5 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
     fun setSetting(setttingModel:SettingModel) {
         sharedPreferencesReopsitory.updateSetting(setttingModel)
     }
+    fun saveLocationSetting(latLng: LatLng)=sharedPreferencesReopsitory.saveLocationSetting(latLng)
 }

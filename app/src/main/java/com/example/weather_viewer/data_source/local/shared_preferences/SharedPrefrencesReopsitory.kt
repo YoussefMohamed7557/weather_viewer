@@ -19,5 +19,6 @@ class SharedPrefrencesReopsitory(context: Application) : AndroidViewModel(contex
     }
 
     fun updateSetting(settingModel: SettingModel)=setting.saveSetting(settingModel)
+    fun saveLocationSetting(latLng: LatLng)=setting.saveLocationSetting(latLng)
 
 }

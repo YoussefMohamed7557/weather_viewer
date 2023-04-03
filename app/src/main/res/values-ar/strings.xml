@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">weather_viewer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="home">الرئيسيه</string>
+    <string name="favourite">المفضله</string>
+    <string name="alert">التنبيهات</string>
+    <string name="setting">الاعدادات</string>
+    <string name="no_data_available">لا توجد بيانات لعرضها</string>
+    <string name="add_fav">اضف للمفضله</string>
+    <string name="enable_alarm">تفعيل التنبيه</string>
+    <string name="event">حدث</string>
+    <string name="description">الوصف</string>
+    <string name="reputation_daily">تكرار يوميا</string>
+    <string name="start">تايخ البدايه</string>
+    <string name="current_mode">الوضع الحالى</string>
+    <string name="_c">C</string>
+    <string name="mostly_clear">صافى</string>
+    <string name="save">حفظ</string>
+    <string name="arabic">العربيه</string>
+    <string name="english">الانجليزيه</string>
+    <string name="add_custom_location">اضافه الموقع يدويا</string>
+    <string name="gps">GPS استخدام نظام</string>
+    <string name="her_you_can_chose_your_location_setting">اعدادات ضبط الموقع</string>
+    <string name="her_you_can_chose_language">اختر اللغه</string>
+    <string name="imperial">النظام الامبراطورى</string>
+    <string name="standard">النظام الرئيسى</string>
+    <string name="choose_units_of_measurement">اعدادات ضبط وحدات القياس</string>
+    <string name="metric">النظام المترى</string>
+    <string name="celsius_and_wind_speed_in_meter_sec">تقاس الحرره بالسيليزيوس \n و سرعة الرياح بوحده المتر لكل ثانيه</string>
+    <string name="kelvin_and_wind_speed_in_meter_sec">تقاس الحرره بالكيلفين \n و سرعة الرياح بوحده المتر لكل ثانيه </string>
+    <string name="fahrenheit_and_wind_speed_in_miles_hour">تقاس الحرره بالفهرنهايت \n و سرعة الرياح بوحده الميل لكل ساعه </string>
+    <string name="reload">اعادة التحميل</string>
+    <string name="current">حاليا</string>
+    <string name="today">اليوم بالساعات</string>
+    <string name="humidity">الرطوبه</string>
+    <string name="wind_speed">سرغة الرياح</string>
+    <string name="pressure">الضغط</string>
+    <string name="clouds">الغيوم</string>
+    <string name="sunrise">الشروق</string>
+    <string name="sunset">الغروب</string>
+    <string name="content">المحتوى</string>
+    <string name="this_week">الاسبوع بالايام</string>
+    <string name="_3_15">3 : 15</string>
+    <string name="location_not_enabel">اعدات الموقع غير مفعله..!</string>
+    <string name="to_load_condetions">لتحميل معلومات الطقس يجب تفعيل اعدات الموقع</string>
+    <string name="enabel">تفعيل</string>
+    <string name="load_from_last_known_data">استرجاع البيانات المحمله مسبقا</string>
+    <string name="you_areoffline">انت غير متصل بالنت ..!</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="are_you_sure">تاكيد عملية تعيين الموقع</string>
+    <string name="are_you_sure_location">تاكيد نخزين هذا الموقع لتعيينه كموقعك الحالى ؟</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+</resources>

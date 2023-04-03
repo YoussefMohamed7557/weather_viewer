@@ -23,11 +23,13 @@
 
         <ToggleButton
             android:id="@+id/enableOrNot"
-            android:layout_width="178dp"
-            android:layout_height="87dp"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
             android:layout_gravity="end"
             android:background="@drawable/toggle_selector"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textOff="@string/off"
+            android:textOn="@string/on" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="120dp"

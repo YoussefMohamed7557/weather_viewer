@@ -57,6 +57,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun relad() {
         Log.d("TAG", "reload")
