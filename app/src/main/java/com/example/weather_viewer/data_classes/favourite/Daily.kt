@@ -1,4 +1,4 @@
-package com.example.weather_viewer.data_classes
+package com.example.weather_viewer.data_classes.favourite
 
 data class Daily(
     val clouds: Double,

@@ -66,7 +66,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             if (type=="setting"){
                 mapActivityViewMode.showLocationSavingAlarm(this)
             }else {
-                //TODO: - Handle Add this location to favourites case
+                mapActivityViewMode.showAlarm(this)
             }
             Log.d("TAG", "${latLng.latitude}.....${type}")
             Log.d("TAG type", "")

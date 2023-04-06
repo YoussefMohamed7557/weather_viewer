@@ -1,60 +1,90 @@
 package com.example.weather_viewer.fragments.favourite_fragment
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_viewer.R
+import com.example.weather_viewer.data_source.local.room.entities.FavData
+import com.example.weather_viewer.databinding.FragmentFavouriteBinding
+import com.example.weather_viewer.main_activity.MainActivity
+import com.example.weather_viewer.map_activity.MapActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FavouriteFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FavouriteFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var binding : FragmentFavouriteBinding
+    private lateinit var favouriteViewModel: FavouriteViewModel
+    private lateinit var adapter: FavouriteAdapter
+    private lateinit var dataList : List<FavData>
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favourite, container, false)
+    ): View {
+        binding = FragmentFavouriteBinding.inflate(inflater, container, false)
+        favouriteViewModel= ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application))[FavouriteViewModel::class.java]
+
+        adapter= FavouriteAdapter(favouriteViewModel, MainActivity.units)
+        binding.addButton.setOnClickListener{
+            if (favouriteViewModel.getOnline(requireActivity())) {
+                val intent = Intent(activity, MapActivity::class.java)
+                startActivity(intent)
+            }else{
+                Toast.makeText(requireActivity(),getString(R.string.you_are_offline), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        favouriteViewModel.getFavDataBase().observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                binding.recyclerViewFav.visibility = View.VISIBLE
+                binding.empty.visibility = View.GONE
+                loadFavourite(it)
+                dataList = it
+            } else {
+                binding.empty.visibility = View.VISIBLE
+                binding.recyclerViewFav.visibility = View.GONE
+            }
+        }
+        favouriteViewModel.getAlertDialogLiveData().observe(viewLifecycleOwner) {
+            if (it != null) {
+                showAlarm(it.lat.toString(), it.lon.toString())
+            }
+        }
+        //TODO:- SHOW THE WEATHER DETAILS ON CLICK THE LIST ITEM
+
+        return binding.root
+    }
+    private fun loadFavourite(it: List<FavData>) {
+        val lay : RecyclerView.LayoutManager= LinearLayoutManager(activity)
+        binding.recyclerViewFav.layoutManager=lay
+        adapter.models=it
+        binding.recyclerViewFav.adapter=adapter
+    }
+    private fun showAlarm(lat : String,lon: String) {
+        val alertDialogBuilder = AlertDialog.Builder(requireActivity())
+        alertDialogBuilder.setTitle("Are you Sure")
+        alertDialogBuilder.setMessage("you want to delete this city")
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            CoroutineScope(Dispatchers.IO).launch {
+                favouriteViewModel.deleteOneFav(lat,lon)
+            }
+        }
+        alertDialogBuilder.setNegativeButton("No") { _, _ ->
+
+        }
+        alertDialogBuilder.show()
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FavouriteFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FavouriteFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

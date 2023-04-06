@@ -1,6 +1,6 @@
 package com.example.weather_viewer.data_source.local.room
 import androidx.room.TypeConverter
-import com.example.weather_viewer.data_classes.*
+import com.example.weather_viewer.data_classes.one_call.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

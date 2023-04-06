@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_viewer.R
-import com.example.weather_viewer.data_classes.Hourly
+import com.example.weather_viewer.data_classes.one_call.Hourly
 import com.example.weather_viewer.main_activity.MainActivity
 
 class HourlyAdabter(var homeViewModel: HomeViewModel) : RecyclerView.Adapter<HourlyAdabter.MyViewHolder>() {

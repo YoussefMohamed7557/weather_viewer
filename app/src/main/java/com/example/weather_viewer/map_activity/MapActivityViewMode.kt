@@ -12,6 +12,7 @@ import com.google.android.gms.maps.model.LatLng
 class MapActivityViewMode(application: Application) : AndroidViewModel(application) {
     val saveLatLng : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     private val dataSourceViewModel: DataSourceViewModel = DataSourceViewModel(application)
+    val saveFav :MutableLiveData<Boolean> =MutableLiveData<Boolean>()
     fun showLocationSavingAlarm(context: Context) {
         val alertDialogBuilder = AlertDialog.Builder(context)
         alertDialogBuilder.setTitle(context.getString(R.string.are_you_sure))
@@ -26,8 +27,17 @@ class MapActivityViewMode(application: Application) : AndroidViewModel(applicati
     }
 
     fun saveLocationSetting(latLng: LatLng)=dataSourceViewModel.saveLocationSetting(latLng)
-    fun showAlarm(mapActivity: MapActivity) {
-
+    fun showAlarm(context: Context) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle(context.getString(R.string.are_you_sure))
+        alertDialogBuilder.setMessage(context.getString(R.string.you_want_to_add))
+        alertDialogBuilder.setPositiveButton(context.getString(R.string.yes)) { _, _ ->
+            saveFav.value=true
+        }
+        alertDialogBuilder.setNegativeButton(context.getString(R.string.no)) { _, _ ->
+            saveFav.value=false
+        }
+        alertDialogBuilder.show()
     }
 
 }

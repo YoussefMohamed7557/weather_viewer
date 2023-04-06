@@ -1,4 +1,4 @@
-package com.example.weather_viewer.data_classes
+package com.example.weather_viewer.data_classes.one_call
 
 data class Alert(
     val description: String,

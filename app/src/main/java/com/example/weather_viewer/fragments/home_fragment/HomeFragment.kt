@@ -13,8 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_viewer.R
-import com.example.weather_viewer.data_classes.Daily
-import com.example.weather_viewer.data_classes.Hourly
+import com.example.weather_viewer.data_classes.one_call.Daily
+import com.example.weather_viewer.data_classes.one_call.Hourly
 import com.example.weather_viewer.data_source.local.room.entities.AllData
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
 import com.example.weather_viewer.databinding.FragmentHomeBinding

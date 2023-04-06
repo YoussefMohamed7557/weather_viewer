@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.weather_viewer.data_source.local.room.RoomRepositry
 import com.example.weather_viewer.data_source.local.room.entities.AllData
+import com.example.weather_viewer.data_source.local.room.entities.FavData
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
 import com.example.weather_viewer.data_source.local.shared_preferences.SharedPrefrencesReopsitory
 import com.example.weather_viewer.data_source.remote.ApiClient
@@ -71,8 +72,14 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
 
     }
 
-    fun setSetting(setttingModel:SettingModel) {
+    fun setSetting(setttingModel: SettingModel) {
         sharedPreferencesReopsitory.updateSetting(setttingModel)
     }
     fun saveLocationSetting(latLng: LatLng)=sharedPreferencesReopsitory.saveLocationSetting(latLng)
+    fun deleteOneFav(lat: String,lon: String){
+        roomRepositry.deleteOneFav(lat,lon)
+    }
+    fun getFavDataBase() : LiveData<List<FavData>>{
+        return roomRepositry.getFavData()
+    }
 }

@@ -2,10 +2,10 @@ package com.example.weather_viewer.data_source.local.room.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.weather_viewer.data_classes.Alert
-import com.example.weather_viewer.data_classes.Current
-import com.example.weather_viewer.data_classes.Daily
-import com.example.weather_viewer.data_classes.Hourly
+import com.example.weather_viewer.data_classes.one_call.Alert
+import com.example.weather_viewer.data_classes.one_call.Current
+import com.example.weather_viewer.data_classes.one_call.Daily
+import com.example.weather_viewer.data_classes.one_call.Hourly
 
 @Entity
 data class AllData(
