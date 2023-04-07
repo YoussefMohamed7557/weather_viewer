@@ -36,12 +36,14 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="40dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
                 android:contentDescription="@string/current_mode"
                 android:src="@drawable/ic_cloud"
-                app:layout_constraintStart_toEndOf="@id/description"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/remove_fav" />
 
             <TextView
                 android:id="@+id/time_zone"
@@ -50,7 +52,7 @@
                 android:layout_marginStart="20dp"
                 android:text="@string/_c"
                 android:textColor="@color/black"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,7 +64,7 @@
                 android:fontFamily="sans-serif-black"
                 android:text="@string/_c"
                 android:textColor="@color/purple_700"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@id/currentModeImg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/time_zone" />
@@ -71,13 +73,13 @@
                 android:id="@+id/tempUnit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:fontFamily="sans-serif-black"
                 android:text="@string/_c"
                 android:textColor="@color/purple_700"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@id/currentTemp"
-                app:layout_constraintStart_toEndOf="@id/currentTemp"
+                app:layout_constraintStart_toEndOf="@+id/currentTemp"
                 app:layout_constraintTop_toTopOf="@id/currentTemp"
                 app:layout_constraintVertical_bias="1.0" />
 
@@ -85,14 +87,13 @@
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="70dp"
-                android:layout_marginBottom="11dp"
+                android:layout_marginEnd="4dp"
                 android:fontFamily="sans-serif-black"
                 android:text="@string/mostly_clear"
                 android:textColor="@color/purple_700"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tempUnit"
-                app:layout_constraintStart_toEndOf="@id/currentTemp"
+                app:layout_constraintEnd_toStartOf="@+id/currentModeImg"
                 app:layout_constraintTop_toTopOf="@id/tempUnit" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

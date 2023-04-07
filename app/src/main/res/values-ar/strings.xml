@@ -34,7 +34,7 @@
     <string name="current">حاليا</string>
     <string name="today">اليوم بالساعات</string>
     <string name="humidity">الرطوبه</string>
-    <string name="wind_speed">سرغة الرياح</string>
+    <string name="wind_speed">سرعة الرياح</string>
     <string name="pressure">الضغط</string>
     <string name="clouds">الغيوم</string>
     <string name="sunrise">الشروق</string>
@@ -52,4 +52,6 @@
     <string name="are_you_sure_location">تاكيد نخزين هذا الموقع لتعيينه كموقعك الحالى ؟</string>
     <string name="yes">نعم</string>
     <string name="no">لا</string>
+    <string name="you_are_offline">انت غير متصل بشبكة الانترنت ..!</string>
+    <string name="you_want_to_add">تاكيد اضافة هذه المدينه لقائمة المدن المفضله</string>
 </resources>

@@ -31,4 +31,12 @@ class RoomRepositry(context: Application) : AndroidViewModel(context) {
         return weatherDao.getFavData()
     }
 
+    fun getFavDataNotLiveData(): List<FavData>{
+        return weatherDao.getFavDataNotLiveData()
+    }
+
+    suspend fun saveFavData(favData : FavData){
+        weatherDao.saveFaveData(favData)
+    }
+
 }

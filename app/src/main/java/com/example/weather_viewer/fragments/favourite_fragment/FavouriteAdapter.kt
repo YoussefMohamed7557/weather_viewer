@@ -38,7 +38,7 @@ class FavouriteAdapter(var favViewModel: FavouriteViewModel,val units:String) : 
                 true
             }
             remove.setOnClickListener {
-                favViewModel.getAlertDialogLiveData()
+                favViewModel.setAlertDialogLiveData(favData)
             }
 
         }

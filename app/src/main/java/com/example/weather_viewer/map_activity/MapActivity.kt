@@ -42,6 +42,20 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
             }
         }
+        mapActivityViewMode.saveFav.observe(this, { it ->
+            if (it) {
+                mapActivityViewMode.getSettnig().observe(this, {
+                    mapActivityViewMode.saveFav(
+                        latLng.latitude.toString(),
+                        latLng.longitude.toString(),
+                        it.lang,
+                        it.units
+                    )
+                })
+                mapActivityViewMode.saveFav.value = false
+
+            }
+        })
     }
 
     /**

@@ -27,6 +27,7 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
     private val sharedPreferencesReopsitory: SharedPrefrencesReopsitory =
         SharedPrefrencesReopsitory(application)
     private lateinit var job: Job
+    private lateinit var job1: Job
     fun getRoomDataBase(): LiveData<List<AllData>> {
         return roomRepositry.getAllData()
     }
@@ -81,5 +82,25 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
     }
     fun getFavDataBase() : LiveData<List<FavData>>{
         return roomRepositry.getFavData()
+    }
+
+    fun getFavDataNotLiveData(): List<FavData>{
+        return roomRepositry.getFavDataNotLiveData()
+    }
+
+    fun saveFave(lat: String,lon: String,lang: String,units :String) {
+        val data =  repositoryonLine.getFavCall(lat,lon,lang,"cc578004936ddce46e2c61bb7a0b729f","minutely",units)
+        data.enqueue(object : Callback<FavData?> {
+            override fun onResponse(call: Call<FavData?>, response: Response<FavData?>) {
+                Log.d("tag", response.body().toString())
+                job1= CoroutineScope(Dispatchers.IO).launch {
+                    roomRepositry.saveFavData(response.body()!!)
+                }
+            }
+
+            override fun onFailure(call: Call<FavData?>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
     }
 }

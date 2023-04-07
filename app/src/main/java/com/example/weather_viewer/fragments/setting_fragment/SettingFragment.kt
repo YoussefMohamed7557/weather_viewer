@@ -57,11 +57,12 @@ class SettingFragment : Fragment() {
             } else {
                 binding.unitsRadioGroup.check(R.id.metricRadioButton)
             }
-
-            if (lang == "en") {
-                binding.langRadioGroup.check(R.id.EnglishRadioButton)
-            } else {
+            if(lang == "ar" ) {
                 binding.langRadioGroup.check(R.id.ArabicRadioButton)
+            }else if (lang == "en" ) {
+                binding.langRadioGroup.check(R.id.EnglishRadioButton)
+            } else{
+                binding.langRadioGroup.check(R.id.EnglishRadioButton)
             }
 
             if (location == "add") {

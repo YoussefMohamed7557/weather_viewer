@@ -4,9 +4,11 @@ import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.weather_viewer.R
 import com.example.weather_viewer.data_source.DataSourceViewModel
+import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
 import com.google.android.gms.maps.model.LatLng
 
 class MapActivityViewMode(application: Application) : AndroidViewModel(application) {
@@ -38,6 +40,14 @@ class MapActivityViewMode(application: Application) : AndroidViewModel(applicati
             saveFav.value=false
         }
         alertDialogBuilder.show()
+    }
+
+    fun getSettnig(): LiveData<SettingModel> {
+        return dataSourceViewModel.getSetting()
+    }
+
+    fun saveFav(lat: String,lon: String,lang: String,units :String){
+        dataSourceViewModel.saveFave(lat,lon,lang,units)
     }
 
 }

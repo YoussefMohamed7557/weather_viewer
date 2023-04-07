@@ -53,6 +53,6 @@
     <string name="no">No</string>
     <string name="off" translatable="false">off</string>
     <string name="on" translatable="false">on</string>
-    <string name="you_are_offline">You are ofline ..!</string>
+    <string name="you_are_offline">You are offline ..!</string>
     <string name="you_want_to_add">Confirm adding this location to store it as favourite place</string>
 </resources>

@@ -35,7 +35,7 @@ class SettingSB(val context: Context) {
     fun loadSetting(){
         CoroutineScope(Dispatchers.IO).launch {
             val units = sharedPreferences.getString("units","standard")
-            val lang = sharedPreferences.getString("lang","ar")
+            val lang = sharedPreferences.getString("lang","en")
             val location = sharedPreferences.getString("location","gps")
             SettingData.postValue(SettingModel(units!!, lang!!, location!!))
         }

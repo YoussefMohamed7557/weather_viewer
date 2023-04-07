@@ -33,7 +33,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         homeViewModel = ViewModelProvider(this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)) [HomeViewModel::class.java]
-        relad()
+        reload()
         adapter = HourlyAdabter(homeViewModel)
         dailyadapter = DailyAdapter(homeViewModel)
         setCurrentBtnClickListener()
@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
         
         binding.reload.setOnClickListener {
             Log.d("TAG", "clicked")
-            relad()
+            reload()
         }
         
         homeViewModel.getRoomData().observe(viewLifecycleOwner) {
@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
 
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun relad() {
+    private fun reload() {
         Log.d("TAG", "reload")
 
         lateinit var settingModel: SettingModel
