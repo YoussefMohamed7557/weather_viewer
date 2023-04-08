@@ -51,5 +51,9 @@ class FavouriteViewModel(application: Application) : AndroidViewModel(applicatio
         return alertDialogLiveData
     }
 
+    fun getIntent():LiveData<Int>{
+        return intentLiveData
+    }
+
 
 }

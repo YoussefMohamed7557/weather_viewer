@@ -18,7 +18,7 @@ import com.example.weather_viewer.data_classes.one_call.Hourly
 import com.example.weather_viewer.data_source.local.room.entities.AllData
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
 import com.example.weather_viewer.databinding.FragmentHomeBinding
-import com.example.weather_viewer.main_activity.MainActivity
+import com.example.weather_viewer.activities.main_activity.MainActivity
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding

@@ -39,4 +39,8 @@ class RoomRepositry(context: Application) : AndroidViewModel(context) {
         weatherDao.saveFaveData(favData)
     }
 
+    fun getOneFav(lat: String,lon: String):LiveData<FavData>{
+        return weatherDao.getOneFav(lat,lon)
+    }
+
 }

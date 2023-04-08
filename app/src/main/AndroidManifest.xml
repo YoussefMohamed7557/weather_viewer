@@ -17,7 +17,9 @@
         android:theme="@style/Theme.Weather_viewer"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".activities.favourite_details_activity.FavouriteDetails"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -25,10 +27,11 @@
 
         <activity
             android:name=".map_activity.MapActivity"
+            android:name=".activities.map_activity.MapActivity"
             android:exported="false"
             android:label="@string/title_activity_map" />
         <activity
-            android:name=".main_activity.MainActivity"
+            android:name=".activities.main_activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

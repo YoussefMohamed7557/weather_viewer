@@ -1,4 +1,4 @@
-package com.example.weather_viewer.map_activity
+package com.example.weather_viewer.activities.map_activity
 
 import android.app.Application
 import android.content.Context

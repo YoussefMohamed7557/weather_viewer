@@ -12,8 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weather_viewer.R
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
 import com.example.weather_viewer.databinding.FragmentSettingBinding
-import com.example.weather_viewer.main_activity.MainActivity
-import com.example.weather_viewer.map_activity.MapActivity
+import com.example.weather_viewer.activities.main_activity.MainActivity
+import com.example.weather_viewer.activities.map_activity.MapActivity
 
 
 class SettingFragment : Fragment() {

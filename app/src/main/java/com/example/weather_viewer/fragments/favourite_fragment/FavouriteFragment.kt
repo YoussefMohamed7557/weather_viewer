@@ -14,10 +14,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_viewer.R
+import com.example.weather_viewer.activities.favourite_details_activity.FavouriteDetails
 import com.example.weather_viewer.data_source.local.room.entities.FavData
 import com.example.weather_viewer.databinding.FragmentFavouriteBinding
-import com.example.weather_viewer.main_activity.MainActivity
-import com.example.weather_viewer.map_activity.MapActivity
+import com.example.weather_viewer.activities.main_activity.MainActivity
+import com.example.weather_viewer.activities.map_activity.MapActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -58,12 +59,15 @@ class FavouriteFragment : Fragment() {
             }
         }
         favouriteViewModel.getAlertDialogLiveData().observe(viewLifecycleOwner) {
-            if (it != null) {
-                showAlarm(it.lat.toString(), it.lon.toString())
-            }
+            if (it != null) showAlarm(it.lat.toString(), it.lon.toString())
         }
-        //TODO:- SHOW THE WEATHER DETAILS ON CLICK THE LIST ITEM
-
+        favouriteViewModel.getIntent().observe(viewLifecycleOwner) {
+            val intent = Intent(activity, FavouriteDetails::class.java)
+            intent.putExtra("lat", "${dataList[it].lat}")
+            intent.putExtra("lon", "${dataList[it].lon}")
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+            startActivity(intent)
+        }
         return binding.root
     }
     private fun loadFavourite(it: List<FavData>) {

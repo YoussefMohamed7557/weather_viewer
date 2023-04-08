@@ -1,4 +1,4 @@
-package com.example.weather_viewer.fragments.home_fragment
+package com.example.weather_viewer.activities.favourite_details_activity
 
 import android.os.Build
 import android.view.LayoutInflater
@@ -9,11 +9,12 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_viewer.R
-import com.example.weather_viewer.data_classes.one_call.Hourly
 import com.example.weather_viewer.activities.main_activity.MainActivity
+import com.example.weather_viewer.data_classes.favourite.Daily
 
-class HourlyAdabter(var homeViewModel: HomeViewModel) : RecyclerView.Adapter<HourlyAdabter.MyViewHolder>() {
-    lateinit var models: List<Hourly>
+class DailyAdapter (var homeViewModel: DetailsViewModel) : RecyclerView.Adapter<DailyAdapter.MyViewHolder>() {
+    lateinit var models: List<Daily>
+
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var time = itemView.findViewById<TextView>(R.id.currentTime)
         private var tempUnits = itemView.findViewById<TextView>(R.id.tempUnit)
@@ -22,11 +23,11 @@ class HourlyAdabter(var homeViewModel: HomeViewModel) : RecyclerView.Adapter<Hou
         private var icon = itemView.findViewById<ImageView>(R.id.currentModeImg)
 
         @RequiresApi(Build.VERSION_CODES.O)
-        fun binding(hourly: Hourly) {
+        fun binding(hourly: Daily) {
             homeViewModel.loadImage(icon,hourly.weather[0].icon)
             description.text = hourly.weather[0].description
-            temp.text = hourly.temp.toString()
-            time.text = homeViewModel.formateTime(hourly.dt)
+            temp.text = hourly.temp.day.toString()
+            time.text = homeViewModel.formatDate(hourly.dt)
             tempUnits.text=homeViewModel.getUnites(MainActivity.units)
 
         }
@@ -38,12 +39,12 @@ class HourlyAdabter(var homeViewModel: HomeViewModel) : RecyclerView.Adapter<Hou
         return MyViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return models.size
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.binding(models[position])
+    }
+
+    override fun getItemCount(): Int {
+        return models.size
     }
 }

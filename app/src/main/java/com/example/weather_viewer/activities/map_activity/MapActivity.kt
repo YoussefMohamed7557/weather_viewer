@@ -1,4 +1,4 @@
-package com.example.weather_viewer.map_activity
+package com.example.weather_viewer.activities.map_activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

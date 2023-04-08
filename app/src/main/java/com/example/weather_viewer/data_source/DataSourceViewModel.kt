@@ -11,7 +11,7 @@ import com.example.weather_viewer.data_source.local.shared_preferences.SettingMo
 import com.example.weather_viewer.data_source.local.shared_preferences.SharedPrefrencesReopsitory
 import com.example.weather_viewer.data_source.remote.ApiClient
 import com.example.weather_viewer.data_source.remote.Repository
-import com.example.weather_viewer.main_activity.MainActivity
+import com.example.weather_viewer.activities.main_activity.MainActivity
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -102,5 +102,9 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
                 t.printStackTrace()
             }
         })
+    }
+
+    fun getOneFav(lat: String,lon: String):LiveData<FavData>{
+        return roomRepositry.getOneFav(lat,lon)
     }
 }

@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_viewer.R
 import com.example.weather_viewer.data_classes.one_call.Daily
-import com.example.weather_viewer.main_activity.MainActivity
+import com.example.weather_viewer.activities.main_activity.MainActivity
 
 class DailyAdapter ( var homeViewModel: HomeViewModel) : RecyclerView.Adapter<DailyAdapter.MyViewHolder>() {
     lateinit var models: List<Daily>
