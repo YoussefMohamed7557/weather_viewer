@@ -6,10 +6,11 @@ import androidx.lifecycle.LiveData
 import com.example.weather_viewer.data_source.DataSourceViewModel
 import com.example.weather_viewer.data_source.local.room.entities.FavData
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
+import kotlinx.coroutines.flow.Flow
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val dataSourceViewModel: DataSourceViewModel = DataSourceViewModel(application)
-    fun getFavDataNotLiveData(): List<FavData>{
+    fun getFavDataNotLiveData(): Flow<List<FavData>> {
         return dataSourceViewModel.getFavDataNotLiveData()
     }
 

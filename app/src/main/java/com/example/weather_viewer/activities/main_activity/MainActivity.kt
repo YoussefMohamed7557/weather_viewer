@@ -3,9 +3,11 @@ package com.example.weather_viewer.activities.main_activity
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
 import com.example.weather_viewer.R
 import com.example.weather_viewer.data_source.local.room.entities.FavData
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
@@ -16,6 +18,7 @@ import com.example.weather_viewer.fragments.home_fragment.HomeFragment
 import com.example.weather_viewer.fragments.setting_fragment.SettingFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -59,11 +62,20 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("SuspiciousIndentation")
     private fun updateFavourite() {
-        list = mainViewModel.getFavDataNotLiveData()
+       // list = mainViewModel.getFavDataNotLiveData()
+        list = emptyList()
+        lifecycleScope.launch(Dispatchers.Main){
+            mainViewModel.getFavDataNotLiveData()
+                .catch {
+                    Toast.makeText(this@MainActivity,it.message,Toast.LENGTH_SHORT).show()
+                }
+                .collect{
+                list = it
+                }
+        }
         mainViewModel.getSettnig().observe(this@MainActivity) {
             setting = it
             CoroutineScope(Dispatchers.IO).launch {
-//            mainViewModel.deleteAllFav()
                 for (i in list) {
                     mainViewModel.saveFav(
                         i.lat.toString(),

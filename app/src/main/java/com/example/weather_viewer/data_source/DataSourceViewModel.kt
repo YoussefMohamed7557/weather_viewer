@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,7 +51,7 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
                 "minutely",
                 units
             )
-            //
+
             data.enqueue(object : Callback<AllData?> {
                 override fun onResponse(call: Call<AllData?>, response: Response<AllData?>) {
                     Log.d("tag", response.body().toString())
@@ -69,8 +70,6 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
                 }
             })
         }
-
-
     }
 
     fun setSetting(setttingModel: SettingModel) {
@@ -84,7 +83,7 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
         return roomRepositry.getFavData()
     }
 
-    fun getFavDataNotLiveData(): List<FavData>{
+    fun getFavDataNotLiveData(): Flow<List<FavData>> {
         return roomRepositry.getFavDataNotLiveData()
     }
 

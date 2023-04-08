@@ -96,7 +96,6 @@ class HomeFragment : Fragment() {
                         requireActivity()
                     )
                 }
-
             }
         }
     }

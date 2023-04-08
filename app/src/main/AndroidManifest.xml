@@ -26,7 +26,6 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".map_activity.MapActivity"
             android:name=".activities.map_activity.MapActivity"
             android:exported="false"
             android:label="@string/title_activity_map" />

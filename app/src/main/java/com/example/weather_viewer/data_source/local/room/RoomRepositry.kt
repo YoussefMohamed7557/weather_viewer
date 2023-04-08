@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.weather_viewer.data_source.local.room.entities.AllData
 import com.example.weather_viewer.data_source.local.room.entities.FavData
+import kotlinx.coroutines.flow.Flow
 
 class RoomRepositry(context: Application) : AndroidViewModel(context) {
     val database : DataBaseWeather?= DataBaseWeather.getInstance(context)
@@ -15,9 +16,6 @@ class RoomRepositry(context: Application) : AndroidViewModel(context) {
     }
     fun getAllData(): LiveData<List<AllData>> {
         return weatherDao.getAllData()
-    }
-    fun getData(): List<AllData>{
-        return weatherDao.getData()
     }
     fun deleteAll(){
         return weatherDao.deleteAll()
@@ -31,7 +29,7 @@ class RoomRepositry(context: Application) : AndroidViewModel(context) {
         return weatherDao.getFavData()
     }
 
-    fun getFavDataNotLiveData(): List<FavData>{
+    fun getFavDataNotLiveData(): Flow<List<FavData>> {
         return weatherDao.getFavDataNotLiveData()
     }
 

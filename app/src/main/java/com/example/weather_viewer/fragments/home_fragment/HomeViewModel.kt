@@ -46,7 +46,6 @@ class HomeViewModel(application: Application) :  AndroidViewModel(application) {
     }
 
     fun getRoomData(): LiveData<List<AllData>> {
-
         return dataSourceViewModel.getRoomDataBase()
     }
 
