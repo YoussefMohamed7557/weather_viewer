@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +23,7 @@ import com.example.weather_viewer.data_source.local.room.entities.AllData
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
 import com.example.weather_viewer.databinding.FragmentHomeBinding
 import com.example.weather_viewer.activities.main_activity.MainActivity
+import com.example.weather_viewer.data_classes.ResponseStates
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -33,6 +37,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding.progressBar.visibility = View.GONE
         homeViewModel = ViewModelProvider(this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)) [HomeViewModel::class.java]
         reload()
@@ -48,13 +53,28 @@ class HomeFragment : Fragment() {
         }
         lifecycleScope.launch{
             homeViewModel.getRoomData()
-            homeViewModel.allDataList.collect{
-                if (it.size == 1) {
-                    initUI(it[0])
-                    loadHourly(it[0].hourly)
-                    loadDaily(it[0].daily)
-                    homeViewModel.loadImage(binding.currentModeImg, it[0].current.weather[0].icon)
+            homeViewModel.allDataList.collect{state->
+                when(state){
+                    is ResponseStates.OnError -> {
+                        Toast.makeText(requireContext(),state.message,Toast.LENGTH_SHORT).show()
+                        binding.progressBar.visibility = View.GONE
+                    }
+                    is ResponseStates.OnSuccess -> {
+                        if (state.data.size == 1) {
+                            initUI(state.data[0])
+                            loadHourly(state.data[0].hourly)
+                            loadDaily(state.data[0].daily)
+                            homeViewModel.loadImage(binding.currentModeImg, state.data[0].current.weather[0].icon)
+                            binding.progressBar.visibility = View.GONE
+                        }
+                    }
+                    is ResponseStates.Onloading -> {
+                        Toast.makeText(requireContext(),"loading",Toast.LENGTH_SHORT).show()
+                        binding.progressBar.visibility = View.VISIBLE
+                        binding.progressBar.isGone=false
+                    }
                 }
+
             }
         }
         /*

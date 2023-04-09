@@ -15,6 +15,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.weather_viewer.R
+import com.example.weather_viewer.data_classes.ResponseStates
 import com.example.weather_viewer.data_source.DataSourceViewModel
 import com.example.weather_viewer.data_source.local.room.entities.AllData
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application) :  AndroidViewModel(application) {
@@ -30,8 +32,8 @@ class HomeViewModel(application: Application) :  AndroidViewModel(application) {
     private val generalFunctions : GeneralFunctions = GeneralFunctions()
     private val dataSourceViewModel = DataSourceViewModel(mApplication)
     private val locationHanding: LocationHanding = LocationHanding(mApplication.applicationContext)
-    private val _allDataList = MutableStateFlow<List<AllData>>(emptyList())
-    val allDataList:StateFlow<List<AllData>>
+    private val _allDataList = MutableStateFlow<ResponseStates<List<AllData>>>(ResponseStates.Onloading())
+    val allDataList:StateFlow<ResponseStates<List<AllData>>>
         get() = _allDataList
     @RequiresApi(Build.VERSION_CODES.O)
     fun loadImage(imageView: ImageView, string: String) {
@@ -55,9 +57,12 @@ class HomeViewModel(application: Application) :  AndroidViewModel(application) {
     fun getRoomData(){
         viewModelScope.launch{
             dataSourceViewModel.getRoomDataBase()
+                .catch {
+                    _allDataList.value = ResponseStates.OnError(it.message.toString())
+                }
                 .collect{
-                _allDataList.value = it
-            }
+                _allDataList.value = ResponseStates.OnSuccess(it)
+                }
         }
 
     }

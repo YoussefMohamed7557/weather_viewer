@@ -16,7 +16,6 @@ class SettingSB(val context: Context) {
     }
     private val SettingData: MutableLiveData<SettingModel> = MutableLiveData<SettingModel>()
     private val latlon: MutableLiveData<LatLng> = MutableLiveData<LatLng>()
-    private val alert: MutableLiveData<String> = MutableLiveData<String>()
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(fileName,
         Context.MODE_PRIVATE)
 

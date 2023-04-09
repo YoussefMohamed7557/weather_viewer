@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
+import com.example.weather_viewer.data_classes.ResponseStates
 import com.example.weather_viewer.data_source.DataSourceViewModel
 import com.example.weather_viewer.data_source.local.room.entities.AllData
 import com.example.weather_viewer.data_source.local.room.entities.FavData
@@ -17,6 +18,7 @@ import com.example.weather_viewer.helper.GeneralFunctions
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class FavouriteViewModel(application: Application) : AndroidViewModel(application)  {
@@ -24,8 +26,8 @@ class FavouriteViewModel(application: Application) : AndroidViewModel(applicatio
     private val generalFunctions :GeneralFunctions= GeneralFunctions()
     private val intentLiveData: MutableLiveData<Int> = MutableLiveData<Int>()
     private val alertDialogLiveData: MutableLiveData<FavData> = MutableLiveData<FavData>()
-    private val _allFavoriteList = MutableStateFlow<List<FavData>>(emptyList())
-    val allFavoriteList: StateFlow<List<FavData>>
+    private val _allFavoriteList = MutableStateFlow<ResponseStates<List<FavData>>>(ResponseStates.Onloading())
+    val allFavoriteList: StateFlow<ResponseStates<List<FavData>>>
         get() = _allFavoriteList
     @RequiresApi(Build.VERSION_CODES.O)
     fun loadImage(imageView: ImageView, string: String) {
@@ -55,8 +57,11 @@ class FavouriteViewModel(application: Application) : AndroidViewModel(applicatio
     fun getFavDataBase() {
         viewModelScope.launch{
             dataSourceViewModel.getFavDataBase()
+                .catch{
+                    _allFavoriteList.value = ResponseStates.OnError(it.message.toString())
+                }
                 .collect{
-                    _allFavoriteList.value = it
+                    _allFavoriteList.value = ResponseStates.OnSuccess(it)
                 }
         }
     }

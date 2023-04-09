@@ -20,6 +20,7 @@ import com.example.weather_viewer.data_source.local.room.entities.FavData
 import com.example.weather_viewer.databinding.FragmentFavouriteBinding
 import com.example.weather_viewer.activities.main_activity.MainActivity
 import com.example.weather_viewer.activities.map_activity.MapActivity
+import com.example.weather_viewer.data_classes.ResponseStates
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -50,16 +51,27 @@ class FavouriteFragment : Fragment() {
         }
         lifecycleScope.launch {
             favouriteViewModel.getFavDataBase()
-            favouriteViewModel.allFavoriteList.collect{
-                if (it.isNotEmpty()) {
-                    binding.recyclerViewFav.visibility = View.VISIBLE
-                    binding.empty.visibility = View.GONE
-                    loadFavourite(it)
-                    dataList = it
-                } else {
-                    binding.empty.visibility = View.VISIBLE
-                    binding.recyclerViewFav.visibility = View.GONE
+            favouriteViewModel.allFavoriteList.collect{state->
+                when(state){
+                    is ResponseStates.OnError -> {
+                        Toast.makeText(requireContext(),state.message,Toast.LENGTH_SHORT).show()
+                    }
+                    is ResponseStates.OnSuccess -> {
+                        if (state.data.isNotEmpty()) {
+                            binding.recyclerViewFav.visibility = View.VISIBLE
+                            binding.empty.visibility = View.GONE
+                            loadFavourite(state.data)
+                            dataList = state.data
+                        } else {
+                            binding.empty.visibility = View.VISIBLE
+                            binding.recyclerViewFav.visibility = View.GONE
+                        }
+                    }
+                    is ResponseStates.Onloading -> {
+                        Toast.makeText(requireContext(),"loading",Toast.LENGTH_SHORT).show()
+                    }
                 }
+
             }
         }
         /*
