@@ -13,18 +13,14 @@ import com.example.weather_viewer.data_source.remote.ApiClient
 import com.example.weather_viewer.data_source.remote.Repository
 import com.example.weather_viewer.activities.main_activity.MainActivity
 import com.google.android.gms.maps.model.LatLng
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class DataSourceViewModel(application: Application) : AndroidViewModel(application) {
-    private val repositoryonLine = Repository(ApiClient.apiService)
+    private val repositoryonLine = Repository(ApiClient.apiService())
     private val roomRepositry: RoomRepositry = RoomRepositry(application)
     private val sharedPreferencesReopsitory: SharedPrefrencesReopsitory =
         SharedPrefrencesReopsitory(application)
@@ -42,34 +38,48 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
         return sharedPreferencesReopsitory.getLocationSetting()
     }
 
-    fun loadOneCall(lat: String,lon: String,lang: String,units :String) {
+    suspend fun loadOneCall(lat: String, lon: String, lang: String, units :String) {
         if (!MainActivity.readFromDatabase) {
-            val data = repositoryonLine.getOneCall(
-                lat,
-                lon,
-                lang,
-                "cc578004936ddce46e2c61bb7a0b729f",
-                "minutely",
-                units
-            )
-
-            data.enqueue(object : Callback<AllData?> {
-                override fun onResponse(call: Call<AllData?>, response: Response<AllData?>) {
-                    Log.d("tag", response.body().toString())
-
+            coroutineScope{
+                val dataResponse = async {
+                    repositoryonLine.getOneCall(
+                        lat,
+                        lon,
+                        lang,
+                        "cc578004936ddce46e2c61bb7a0b729f",
+                        "minutely",
+                        units
+                    )
+                }
+                if (dataResponse.await().isSuccessful) {
+                    val data = dataResponse.await().body()
+                    Log.d("tag", data.toString())
                     job = CoroutineScope(Dispatchers.IO).launch {
                         roomRepositry.deleteAll()
-                        if (response.body() != null)
-                            roomRepositry.saveAllData(response.body()!!)
+                        if (data != null)
+                            roomRepositry.saveAllData(data)
                     }
                 }
+                /*
+                data.enqueue(object : Callback<AllData?> {
+                    override fun onResponse(call: Call<AllData?>, response: Response<AllData?>) {
+                        Log.d("tag", response.body().toString())
 
-                override fun onFailure(call: Call<AllData?>, t: Throwable) {
-                    Log.d("tag", t.message.toString())
-                    t.printStackTrace()
+                        job = CoroutineScope(Dispatchers.IO).launch {
+                            roomRepositry.deleteAll()
+                            if (response.body() != null)
+                                roomRepositry.saveAllData(response.body()!!)
+                        }
+                    }
 
-                }
-            })
+                    override fun onFailure(call: Call<AllData?>, t: Throwable) {
+                        Log.d("tag", t.message.toString())
+                        t.printStackTrace()
+
+                    }
+                 })
+                 */
+            }
         }
     }
 
@@ -88,7 +98,20 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
         return roomRepositry.getFavDataNotLiveData()
     }
 
-    fun saveFave(lat: String,lon: String,lang: String,units :String) {
+    suspend fun saveFave(lat: String, lon: String, lang: String, units :String) {
+        coroutineScope {
+            val dataResponse = async {
+                repositoryonLine.getFavCall(lat,lon,lang,"cc578004936ddce46e2c61bb7a0b729f","minutely",units)
+            }
+            if (dataResponse.await().isSuccessful) {
+                val data  = dataResponse.await().body()
+                Log.d("tag", data.toString())
+                job1= CoroutineScope(Dispatchers.IO).launch {
+                    roomRepositry.saveFavData(data!!)
+                }
+            }
+        }
+        /*
         val data =  repositoryonLine.getFavCall(lat,lon,lang,"cc578004936ddce46e2c61bb7a0b729f","minutely",units)
         data.enqueue(object : Callback<FavData?> {
             override fun onResponse(call: Call<FavData?>, response: Response<FavData?>) {
@@ -102,6 +125,7 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
                 t.printStackTrace()
             }
         })
+        */
     }
 
     fun getOneFav(lat: String,lon: String):Flow<FavData>{

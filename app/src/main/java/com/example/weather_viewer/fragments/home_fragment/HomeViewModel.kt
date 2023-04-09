@@ -21,6 +21,7 @@ import com.example.weather_viewer.data_source.local.room.entities.AllData
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
 import com.example.weather_viewer.helper.GeneralFunctions
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -86,7 +87,9 @@ class HomeViewModel(application: Application) :  AndroidViewModel(application) {
     {
         if (generalFunctions.isOnline(context)) {
             Log.d("TAG", "loadOnlineData: ")
-            dataSourceViewModel.loadOneCall(lat, lon, lang, units)
+            viewModelScope.launch(Dispatchers.IO){
+                dataSourceViewModel.loadOneCall(lat, lon, lang, units)
+            }
         }else{
             Toast.makeText(context,context.getString(R.string.you_areoffline), Toast.LENGTH_SHORT).show()
         }

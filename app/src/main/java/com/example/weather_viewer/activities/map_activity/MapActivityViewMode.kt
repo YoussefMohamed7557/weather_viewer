@@ -6,10 +6,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.weather_viewer.R
 import com.example.weather_viewer.data_source.DataSourceViewModel
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MapActivityViewMode(application: Application) : AndroidViewModel(application) {
     val saveLatLng : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
@@ -47,7 +50,10 @@ class MapActivityViewMode(application: Application) : AndroidViewModel(applicati
     }
 
     fun saveFav(lat: String,lon: String,lang: String,units :String){
-        dataSourceViewModel.saveFave(lat,lon,lang,units)
+        //dataSourceViewModel.saveFave(lat,lon,lang,units)
+        viewModelScope.launch(Dispatchers.IO){
+            dataSourceViewModel.saveFave(lat,lon,lang,units)
+        }
     }
 
 }

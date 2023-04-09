@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.weather_viewer.data_source.DataSourceViewModel
 import com.example.weather_viewer.data_source.local.room.entities.FavData
 import com.example.weather_viewer.helper.GeneralFunctions
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -35,7 +36,9 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun saveFave(lat: String,lon: String,lang: String,units :String){
-        dataSourceViewModel.saveFave(lat,lon,lang,units)
+        viewModelScope.launch(Dispatchers.IO){
+            dataSourceViewModel.saveFave(lat,lon,lang,units)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

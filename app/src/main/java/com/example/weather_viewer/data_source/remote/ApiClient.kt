@@ -10,6 +10,7 @@ object ApiClient {
     var gson = GsonBuilder()
         .setLenient()
         .create()
+    /*
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -19,4 +20,15 @@ object ApiClient {
     }
 
     val apiService: ApiInterface = getRetrofit().create(ApiInterface::class.java)
+     */
+    val retrofit: Retrofit by lazy{
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(ScalarsConverterFactory.create()) //important
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
+    fun apiService():ApiInterface{
+        return retrofit.create(ApiInterface::class.java)
+    }
 }
