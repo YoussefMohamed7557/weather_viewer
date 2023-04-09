@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import com.example.weather_viewer.data_source.local.room.entities.AllData
 import com.example.weather_viewer.data_source.local.room.entities.FavData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 class RoomRepositry(context: Application) : AndroidViewModel(context) {
     val database : DataBaseWeather?= DataBaseWeather.getInstance(context)
@@ -14,7 +15,7 @@ class RoomRepositry(context: Application) : AndroidViewModel(context) {
     suspend fun saveAllData(allData : AllData){
         weatherDao.saveAllData(allData)
     }
-    fun getAllData(): LiveData<List<AllData>> {
+    fun getAllData(): Flow<List<AllData>> {
         return weatherDao.getAllData()
     }
     fun deleteAll(){
@@ -25,7 +26,7 @@ class RoomRepositry(context: Application) : AndroidViewModel(context) {
         weatherDao.deleteOneFav(lat,lon)
     }
 
-    fun getFavData(): LiveData<List<FavData>>{
+    fun getFavData(): Flow<List<FavData>>{
         return weatherDao.getFavData()
     }
 
@@ -37,7 +38,7 @@ class RoomRepositry(context: Application) : AndroidViewModel(context) {
         weatherDao.saveFaveData(favData)
     }
 
-    fun getOneFav(lat: String,lon: String):LiveData<FavData>{
+    fun getOneFav(lat: String,lon: String):Flow<FavData>{
         return weatherDao.getOneFav(lat,lon)
     }
 

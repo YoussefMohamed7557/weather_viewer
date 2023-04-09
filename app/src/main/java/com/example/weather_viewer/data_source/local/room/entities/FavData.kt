@@ -15,4 +15,16 @@ data class FavData(
     val current: Current,
     val hourly: List<Hourly>,
     val daily: List<Daily>,
-    val alerts: List<Alert>?)
+    val alerts: List<Alert>?){
+    constructor():this(
+        0.0,
+        0.0,
+        "",
+        0,
+        Current(0,0.0,0,0.0,0,0,0,0,0.0,0.0,0, emptyList(),0,0.0),
+        emptyList<Hourly>(),
+        emptyList<Daily>(),
+        null
+    )
+
+}

@@ -13,19 +13,26 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import com.example.weather_viewer.R
 import com.example.weather_viewer.data_source.DataSourceViewModel
 import com.example.weather_viewer.data_source.local.room.entities.AllData
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
 import com.example.weather_viewer.helper.GeneralFunctions
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application) :  AndroidViewModel(application) {
     private val mApplication: Application=application
     private val generalFunctions : GeneralFunctions = GeneralFunctions()
     private val dataSourceViewModel = DataSourceViewModel(mApplication)
     private val locationHanding: LocationHanding = LocationHanding(mApplication.applicationContext)
-
+    private val _allDataList = MutableStateFlow<List<AllData>>(emptyList())
+    val allDataList:StateFlow<List<AllData>>
+        get() = _allDataList
     @RequiresApi(Build.VERSION_CODES.O)
     fun loadImage(imageView: ImageView, string: String) {
         generalFunctions.loadImage(imageView,string)
@@ -45,8 +52,14 @@ class HomeViewModel(application: Application) :  AndroidViewModel(application) {
         return generalFunctions.formateDate(format)
     }
 
-    fun getRoomData(): LiveData<List<AllData>> {
-        return dataSourceViewModel.getRoomDataBase()
+    fun getRoomData(){
+        viewModelScope.launch{
+            dataSourceViewModel.getRoomDataBase()
+                .collect{
+                _allDataList.value = it
+            }
+        }
+
     }
 
     fun getSetting():LiveData<SettingModel>{

@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,7 +30,7 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
         SharedPrefrencesReopsitory(application)
     private lateinit var job: Job
     private lateinit var job1: Job
-    fun getRoomDataBase(): LiveData<List<AllData>> {
+    fun getRoomDataBase(): Flow<List<AllData>> {
         return roomRepositry.getAllData()
     }
 
@@ -79,7 +80,7 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
     fun deleteOneFav(lat: String,lon: String){
         roomRepositry.deleteOneFav(lat,lon)
     }
-    fun getFavDataBase() : LiveData<List<FavData>>{
+    fun getFavDataBase() : Flow<List<FavData>>{
         return roomRepositry.getFavData()
     }
 
@@ -103,7 +104,7 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
         })
     }
 
-    fun getOneFav(lat: String,lon: String):LiveData<FavData>{
+    fun getOneFav(lat: String,lon: String):Flow<FavData>{
         return roomRepositry.getOneFav(lat,lon)
     }
 }

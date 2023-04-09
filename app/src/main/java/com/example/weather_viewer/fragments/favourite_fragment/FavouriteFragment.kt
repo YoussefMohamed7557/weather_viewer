@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_viewer.R
@@ -21,6 +22,7 @@ import com.example.weather_viewer.activities.main_activity.MainActivity
 import com.example.weather_viewer.activities.map_activity.MapActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class FavouriteFragment : Fragment() {
@@ -46,7 +48,21 @@ class FavouriteFragment : Fragment() {
                 Toast.makeText(requireActivity(),getString(R.string.you_are_offline), Toast.LENGTH_SHORT).show()
             }
         }
-
+        lifecycleScope.launch {
+            favouriteViewModel.getFavDataBase()
+            favouriteViewModel.allFavoriteList.collect{
+                if (it.isNotEmpty()) {
+                    binding.recyclerViewFav.visibility = View.VISIBLE
+                    binding.empty.visibility = View.GONE
+                    loadFavourite(it)
+                    dataList = it
+                } else {
+                    binding.empty.visibility = View.VISIBLE
+                    binding.recyclerViewFav.visibility = View.GONE
+                }
+            }
+        }
+        /*
         favouriteViewModel.getFavDataBase().observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
                 binding.recyclerViewFav.visibility = View.VISIBLE
@@ -58,6 +74,7 @@ class FavouriteFragment : Fragment() {
                 binding.recyclerViewFav.visibility = View.GONE
             }
         }
+         */
         favouriteViewModel.getAlertDialogLiveData().observe(viewLifecycleOwner) {
             if (it != null) showAlarm(it.lat.toString(), it.lon.toString())
         }

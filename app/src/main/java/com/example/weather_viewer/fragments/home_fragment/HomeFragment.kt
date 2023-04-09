@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_viewer.R
@@ -19,6 +20,7 @@ import com.example.weather_viewer.data_source.local.room.entities.AllData
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
 import com.example.weather_viewer.databinding.FragmentHomeBinding
 import com.example.weather_viewer.activities.main_activity.MainActivity
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -44,8 +46,20 @@ class HomeFragment : Fragment() {
             Log.d("TAG", "clicked")
             reload()
         }
-        
-        homeViewModel.getRoomData().observe(viewLifecycleOwner) {
+        lifecycleScope.launch{
+            homeViewModel.getRoomData()
+            homeViewModel.allDataList.collect{
+                if (it.size == 1) {
+                    initUI(it[0])
+                    loadHourly(it[0].hourly)
+                    loadDaily(it[0].daily)
+                    homeViewModel.loadImage(binding.currentModeImg, it[0].current.weather[0].icon)
+                }
+            }
+        }
+        /*
+        homeViewModel.getRoomData()
+            .observe(viewLifecycleOwner) {
             if (it.size == 1) {
                 initUI(it[0])
                 loadHourly(it[0].hourly)
@@ -53,6 +67,7 @@ class HomeFragment : Fragment() {
                 homeViewModel.loadImage(binding.currentModeImg, it[0].current.weather[0].icon)
             }
         }
+        */
          
         return binding.root
     }

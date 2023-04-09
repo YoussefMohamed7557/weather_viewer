@@ -41,17 +41,15 @@ class FavouriteDetails : AppCompatActivity() {
         val lon=intent.getStringExtra("lon")
         Log.d("TAG","${intent.getStringExtra("lat")}")
         Log.d("TAG","${intent.getStringExtra("lon")}")
-        detailsViewModel.getOneFav(lat!!, lon!!).observe(this) {
+        detailsViewModel.getOneFav(lat!!, lon!!)
+        detailsViewModel.oneFav.observe(this) {
             if (it != null)
                 initUI(it)
             loadHourly(it.hourly)
             loadDaily(it.daily)
             detailsViewModel.loadImage(binding.currentModeImg, it.current.weather[0].icon)
-
         }
-
         binding.currentTempUnic.text=detailsViewModel.getUnites(MainActivity.units)
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -6,14 +6,33 @@ import android.os.Build
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.weather_viewer.data_source.DataSourceViewModel
+import com.example.weather_viewer.data_source.local.room.entities.FavData
 import com.example.weather_viewer.helper.GeneralFunctions
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class DetailsViewModel(application: Application) : AndroidViewModel(application) {
     private val mApplication: Application =application
     private val dataSourceViewModel: DataSourceViewModel = DataSourceViewModel(mApplication)
     private val generalFunctions :GeneralFunctions= GeneralFunctions()
-    fun getOneFav(lat: String,lon: String)= dataSourceViewModel.getOneFav(lat,lon)
+    private val _oneFav = MutableLiveData<FavData>()
+    val oneFav: LiveData<FavData>
+        get() = _oneFav
+
+
+    fun getOneFav(lat: String,lon: String){
+        viewModelScope.launch{
+            dataSourceViewModel.getOneFav(lat,lon)
+                .collect{
+                    _oneFav.value = it
+                }
+        }
+    }
 
     fun saveFave(lat: String,lon: String,lang: String,units :String){
         dataSourceViewModel.saveFave(lat,lon,lang,units)
