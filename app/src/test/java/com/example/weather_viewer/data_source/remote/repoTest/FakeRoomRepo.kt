@@ -1,12 +1,8 @@
 package com.example.weather_viewer.data_source.remote.repoTest
 
-import androidx.lifecycle.LiveData
-import com.example.weather_viewer.data_source.GeneralRepoInterface
 import com.example.weather_viewer.data_source.local.room.RoomRepoInterface
 import com.example.weather_viewer.data_source.local.room.entities.AllData
 import com.example.weather_viewer.data_source.local.room.entities.FavData
-import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
-import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow

@@ -18,10 +18,11 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 
+
 class GeneralRepository(private var repositoryonLine:RemoteRepoInterface,
                         private var roomRepositry: RoomRepoInterface,
                         private var sharedPreferencesReopsitory:SharedPreferenceInterface
-){
+) : GeneralRepositoryInterface {
    /*
     init{
         repositoryonLine = Repository(ApiClient.apiService())
@@ -46,10 +47,10 @@ class GeneralRepository(private var repositoryonLine:RemoteRepoInterface,
     }
     private lateinit var job: Job
     private lateinit var job1: Job
-    fun getRoomDataBase(): Flow<List<AllData>> {
+    override fun getRoomDataBase(): Flow<List<AllData>> {
         return roomRepositry.getAllData()
     }
-    fun getSetting(): LiveData<SettingModel> {
+     fun getSetting(): LiveData<SettingModel> {
         return sharedPreferencesReopsitory.getSetting()
     }
     fun getLocationSetting(): LiveData<LatLng> {
@@ -99,21 +100,21 @@ class GeneralRepository(private var repositoryonLine:RemoteRepoInterface,
             }
         }
     }
-    fun setSetting(setttingModel: SettingModel) {
+     fun setSetting(setttingModel: SettingModel) {
         sharedPreferencesReopsitory.updateSetting(setttingModel)
     }
-    fun saveLocationSetting(latLng: LatLng)=sharedPreferencesReopsitory.saveLocationSetting(latLng)
-    fun deleteOneFav(lat: String,lon: String){
+     fun saveLocationSetting(latLng: LatLng)=sharedPreferencesReopsitory.saveLocationSetting(latLng)
+    override fun deleteOneFav(lat: String, lon: String){
         roomRepositry.deleteOneFav(lat,lon)
     }
-    fun getFavDataBase() : Flow<List<FavData>>{
+    override fun getFavDataBase() : Flow<List<FavData>>{
         return roomRepositry.getFavData()
     }
-    fun getFavDataAsList(): Flow<List<FavData>> {
+    override fun getFavDataAsList(): Flow<List<FavData>> {
         return roomRepositry.getFavDataAsList()
     }
 
-    suspend fun saveFave(lat: String, lon: String, lang: String, units :String) {
+    override suspend fun saveFave(lat: String, lon: String, lang: String, units :String) {
         coroutineScope {
             val dataResponse = async {
                 repositoryonLine.getFavCall(lat,lon,lang,"cc578004936ddce46e2c61bb7a0b729f","minutely",units)
@@ -143,7 +144,7 @@ class GeneralRepository(private var repositoryonLine:RemoteRepoInterface,
         */
     }
 
-    fun getOneFav(lat: String,lon: String):Flow<FavData>{
+    override fun getOneFav(lat: String, lon: String):Flow<FavData>{
         return roomRepositry.getOneFav(lat,lon)
     }
 
