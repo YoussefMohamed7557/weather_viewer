@@ -2,7 +2,6 @@ package com.example.weather_viewer.data_source
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.weather_viewer.data_source.local.room.RoomRepositry
 import com.example.weather_viewer.data_source.local.room.entities.AllData
@@ -12,33 +11,51 @@ import com.example.weather_viewer.data_source.local.shared_preferences.SharedPre
 import com.example.weather_viewer.data_source.remote.ApiClient
 import com.example.weather_viewer.data_source.remote.Repository
 import com.example.weather_viewer.activities.main_activity.MainActivity
+import com.example.weather_viewer.data_source.local.room.RoomRepoInterface
+import com.example.weather_viewer.data_source.local.shared_preferences.SharedPreferenceInterface
+import com.example.weather_viewer.data_source.remote.RemoteRepoInterface
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class DataSourceViewModel(application: Application) : AndroidViewModel(application) {
-    private val repositoryonLine = Repository(ApiClient.apiService())
-    private val roomRepositry: RoomRepositry = RoomRepositry(application)
-    private val sharedPreferencesReopsitory: SharedPrefrencesReopsitory =
-        SharedPrefrencesReopsitory(application)
+class GeneralRepository(private var repositoryonLine:RemoteRepoInterface,
+                        private var roomRepositry: RoomRepoInterface,
+                        private var sharedPreferencesReopsitory:SharedPreferenceInterface
+){
+   /*
+    init{
+        repositoryonLine = Repository(ApiClient.apiService())
+        roomRepositry= RoomRepositry(context)
+        sharedPreferencesReopsitory =
+        SharedPrefrencesReopsitory(context)
+    }
+
+    */
+    companion object{
+        @Volatile
+        private var instance:GeneralRepository?=null
+        fun getInstance(app: Application):GeneralRepository{
+            return instance?: synchronized(this){
+                val apiInterface = ApiClient.apiService()
+                val remoteDataSource = Repository(apiInterface)
+                val roomDataSource = RoomRepositry(app)
+                val sharedPrefDataSource = SharedPrefrencesReopsitory(app)
+                GeneralRepository(remoteDataSource,roomDataSource,sharedPrefDataSource)
+            }
+        }
+    }
     private lateinit var job: Job
     private lateinit var job1: Job
     fun getRoomDataBase(): Flow<List<AllData>> {
         return roomRepositry.getAllData()
     }
-
     fun getSetting(): LiveData<SettingModel> {
         return sharedPreferencesReopsitory.getSetting()
     }
-
     fun getLocationSetting(): LiveData<LatLng> {
         return sharedPreferencesReopsitory.getLocationSetting()
     }
-
-    suspend fun loadOneCall(lat: String, lon: String, lang: String, units :String) {
+    suspend fun getOneCall(lat: String, lon: String, lang: String, units :String) {
         if (!MainActivity.readFromDatabase) {
             coroutineScope{
                 val dataResponse = async {
@@ -82,7 +99,6 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
             }
         }
     }
-
     fun setSetting(setttingModel: SettingModel) {
         sharedPreferencesReopsitory.updateSetting(setttingModel)
     }
@@ -93,9 +109,8 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
     fun getFavDataBase() : Flow<List<FavData>>{
         return roomRepositry.getFavData()
     }
-
-    fun getFavDataNotLiveData(): Flow<List<FavData>> {
-        return roomRepositry.getFavDataNotLiveData()
+    fun getFavDataAsList(): Flow<List<FavData>> {
+        return roomRepositry.getFavDataAsList()
     }
 
     suspend fun saveFave(lat: String, lon: String, lang: String, units :String) {
@@ -107,7 +122,7 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
                 val data  = dataResponse.await().body()
                 Log.d("tag", data.toString())
                 job1= CoroutineScope(Dispatchers.IO).launch {
-                    roomRepositry.saveFavData(data!!)
+                    roomRepositry.saveFaveData(data!!)
                 }
             }
         }
@@ -131,4 +146,6 @@ class DataSourceViewModel(application: Application) : AndroidViewModel(applicati
     fun getOneFav(lat: String,lon: String):Flow<FavData>{
         return roomRepositry.getOneFav(lat,lon)
     }
+
+
 }

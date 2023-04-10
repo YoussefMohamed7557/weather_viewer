@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.weather_viewer.R
-import com.example.weather_viewer.data_source.DataSourceViewModel
+import com.example.weather_viewer.data_source.GeneralRepository
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class MapActivityViewMode(application: Application) : AndroidViewModel(application) {
     val saveLatLng : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    private val dataSourceViewModel: DataSourceViewModel = DataSourceViewModel(application)
+    private val generalRepository: GeneralRepository = GeneralRepository.getInstance(application)
     val saveFav :MutableLiveData<Boolean> =MutableLiveData<Boolean>()
     fun showLocationSavingAlarm(context: Context) {
         val alertDialogBuilder = AlertDialog.Builder(context)
@@ -31,7 +31,7 @@ class MapActivityViewMode(application: Application) : AndroidViewModel(applicati
         alertDialogBuilder.show()
     }
 
-    fun saveLocationSetting(latLng: LatLng)=dataSourceViewModel.saveLocationSetting(latLng)
+    fun saveLocationSetting(latLng: LatLng)=generalRepository.saveLocationSetting(latLng)
     fun showAlarm(context: Context) {
         val alertDialogBuilder = AlertDialog.Builder(context)
         alertDialogBuilder.setTitle(context.getString(R.string.are_you_sure))
@@ -46,13 +46,13 @@ class MapActivityViewMode(application: Application) : AndroidViewModel(applicati
     }
 
     fun getSettnig(): LiveData<SettingModel> {
-        return dataSourceViewModel.getSetting()
+        return generalRepository.getSetting()
     }
 
     fun saveFav(lat: String,lon: String,lang: String,units :String){
         //dataSourceViewModel.saveFave(lat,lon,lang,units)
         viewModelScope.launch(Dispatchers.IO){
-            dataSourceViewModel.saveFave(lat,lon,lang,units)
+            generalRepository.saveFave(lat,lon,lang,units)
         }
     }
 

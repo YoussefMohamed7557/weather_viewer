@@ -10,19 +10,17 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.weather_viewer.R
 import com.example.weather_viewer.data_classes.ResponseStates
-import com.example.weather_viewer.data_source.DataSourceViewModel
+import com.example.weather_viewer.data_source.GeneralRepository
 import com.example.weather_viewer.data_source.local.room.entities.AllData
 import com.example.weather_viewer.data_source.local.shared_preferences.SettingModel
 import com.example.weather_viewer.helper.GeneralFunctions
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -31,7 +29,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel(application: Application) :  AndroidViewModel(application) {
     private val mApplication: Application=application
     private val generalFunctions : GeneralFunctions = GeneralFunctions()
-    private val dataSourceViewModel = DataSourceViewModel(mApplication)
+    private val generalRepository = GeneralRepository.getInstance(mApplication)
     private val locationHanding: LocationHanding = LocationHanding(mApplication.applicationContext)
     private val _allDataList = MutableStateFlow<ResponseStates<List<AllData>>>(ResponseStates.Onloading())
     val allDataList:StateFlow<ResponseStates<List<AllData>>>
@@ -57,7 +55,7 @@ class HomeViewModel(application: Application) :  AndroidViewModel(application) {
 
     fun getRoomData(){
         viewModelScope.launch{
-            dataSourceViewModel.getRoomDataBase()
+            generalRepository.getRoomDataBase()
                 .catch {
                     _allDataList.value = ResponseStates.OnError(it.message.toString())
                 }
@@ -69,7 +67,7 @@ class HomeViewModel(application: Application) :  AndroidViewModel(application) {
     }
 
     fun getSetting():LiveData<SettingModel>{
-        return dataSourceViewModel.getSetting()
+        return generalRepository.getSetting()
     }
 
     fun gettingLocation(context: Context, activity: Activity) :LiveData<Location>{
@@ -79,7 +77,7 @@ class HomeViewModel(application: Application) :  AndroidViewModel(application) {
     }
 
     fun getLocationSettnig():LiveData<LatLng>{
-        return dataSourceViewModel.getLocationSetting()
+        return generalRepository.getLocationSetting()
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -88,7 +86,7 @@ class HomeViewModel(application: Application) :  AndroidViewModel(application) {
         if (generalFunctions.isOnline(context)) {
             Log.d("TAG", "loadOnlineData: ")
             viewModelScope.launch(Dispatchers.IO){
-                dataSourceViewModel.loadOneCall(lat, lon, lang, units)
+                generalRepository.getOneCall(lat, lon, lang, units)
             }
         }else{
             Toast.makeText(context,context.getString(R.string.you_areoffline), Toast.LENGTH_SHORT).show()

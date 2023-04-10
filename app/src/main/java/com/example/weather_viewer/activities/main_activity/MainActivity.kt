@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.lifecycleScope
 import com.example.weather_viewer.R
 import com.example.weather_viewer.data_source.local.room.entities.FavData
@@ -65,7 +64,7 @@ class MainActivity : AppCompatActivity() {
        // list = mainViewModel.getFavDataNotLiveData()
         list = emptyList()
         lifecycleScope.launch(Dispatchers.Main){
-            mainViewModel.getFavDataNotLiveData()
+            mainViewModel.getFavDataAsList()
                 .catch {
                     Toast.makeText(this@MainActivity,it.message,Toast.LENGTH_SHORT).show()
                 }
